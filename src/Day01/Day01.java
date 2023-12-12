@@ -53,6 +53,7 @@ public class Day01 {
             }
         }
         System.out.println(sum);
+        fr.close();
     }
 
     public static void mitBuchstaben() throws IOException {
