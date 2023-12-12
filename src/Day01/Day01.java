@@ -1,11 +1,16 @@
 package Day01;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Day01 {
     public static void main(String[] args) throws IOException {
         loadInput();
+        mitBuchstaben();
     }
 
     // Load the input file
@@ -49,4 +54,59 @@ public class Day01 {
         }
         System.out.println(sum);
     }
+
+    public static void mitBuchstaben() throws IOException {
+
+        int sum = 0;
+
+        // String test =
+        // "two1nine\neightwothree\nabcone2threexyz\nxtwone3four\n4nineeightseven2\nzoneight234\n7pqrstsixteen";
+        ArrayList<Integer> aL = new ArrayList<>();
+
+        try {
+            Scanner scanner = new Scanner(new File("src/Day01/file.txt"));
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                for (int i = 0; i < line.length(); i++) {
+                    if (line.charAt(i) <= 57 && line.charAt(i) >= 48) {
+                        aL.add((int) (line.charAt(i) - 48));
+                        continue;
+                    }
+
+                    for (int j = 1; j < 10; j++) {
+                        if (mB(line.substring(i), j)) {
+                            aL.add(j);
+                        }
+                    }
+                }
+                if (aL.size() == 1) {
+                    sum += aL.get(0) * 10 + aL.get(0);
+                } else {
+                    sum += aL.get(0) * 10 + aL.get(aL.size() - 1);
+                }
+                aL.clear();
+            }
+
+            scanner.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println(sum);
+    }
+
+    public static boolean mB(String part, int digit) {
+        String[] numbers = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+        if (part.length() < numbers[digit].length()) {
+            return false;
+        }
+        for (int i = 0; i < numbers[digit].length(); i++) {
+            if (part.charAt(i) != numbers[digit].charAt(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
